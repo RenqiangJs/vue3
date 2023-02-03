@@ -1,6 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
+  lintOnSave: false,
   pages: {
     index: {
       entry: 'src/main.ts',
@@ -18,6 +19,14 @@ module.exports = defineConfig({
           loader: 'ts-loader',
         },
       ],
+    },
+  },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://vue.ruoyi.vip',
+        changeOrigin: true,
+      },
     },
   },
 })

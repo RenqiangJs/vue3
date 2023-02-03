@@ -1,17 +1,22 @@
 {
   "compilerOptions": {
-      "outDir": "./built/",
-      "sourceMap": true,
-      "strict": true,
-      "noImplicitReturns": true,
-      "module": "ESNext",
-      "moduleResolution": "node",
-      "target": "ESNext",
-      "noImplicitAny": false,
-      "allowJs": true,
-      "lib": ["ESNext", "dom", "es2020"],
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom", "es2020"],
+    "baseUrl": "./",
+    "allowJs": true,
+    "paths": {
+      // 根据别名配置相关路径
+      "@/*": ["./src/*"]
+    }
   },
-  "include": [
-      "./src/**/*"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/utils/ruoyi.js", "src/utils/request.js", "src/utils/request.js"]
 }
+
