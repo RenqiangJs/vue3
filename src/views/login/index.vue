@@ -8,7 +8,7 @@
           <p class="input-box user">
             <input
               class="input"
-              v-model="form.username"
+              v-model="loginForm.username"
               type="text"
               :maxlength="10"
               placeholder="请输入用户名"
@@ -18,10 +18,20 @@
             <input
               class="input"
               type="password"
-              v-model="form.password"
+              v-model="loginForm.password"
               :maxlength="16"
               placeholder="请输入密码"
             />
+          </p>
+          <p class="input-box password">
+            <input
+              style="width: 60%"
+              class="input"
+              v-model="loginForm.code"
+              :maxlength="16"
+              placeholder="请输入验证码"
+            />
+            <img :src="codeUrl" @click="getCode" class="login-code-img" />
           </p>
           <a-button type="primary" block @click="submit" :loading="loading"
             >登 录</a-button
@@ -35,32 +45,48 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { message } from 'ant-design-vue'
-import { login } from '@/api'
+import { login, getCodeImg } from '@/api'
 import { useToken } from '@/store/useUserInfo'
 import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
-
-let countdown = ref(0)
-let codeTimer = ref(null)
-const form = ref({
+const codeUrl = ref('')
+// 验证码开关
+const captchaOnOff = ref(true)
+const loginForm = ref({
   username: '',
   password: '',
+  code: '',
+  uuid: '',
 })
 
 const loading = ref(false)
-
+/**
+ * 获取验证码
+ */
+const getCode = () => {
+  getCodeImg().then((res) => {
+    console.log(res, 71)
+    captchaOnOff.value =
+      res.captchaOnOff === undefined ? true : res.captchaOnOff
+    if (captchaOnOff.value) {
+      codeUrl.value = 'data:image/gif;base64,' + res.img
+      loginForm.value.uuid = res.uuid
+    }
+  })
+}
+getCode()
 const submit = function () {
-  if (!form.value.username) {
+  if (!loginForm.value.username) {
     message.error('请输入手机号码')
     return
   }
-  if (!form.value.password) {
+  if (!loginForm.value.password) {
     message.error('请输入验证码')
     return
   }
-  login(form.value).then((res) => {
+  login(loginForm.value).then((res) => {
     // 做一些登录后的操作 保存token 重定向至上一个页面或者首页
     const tokenStore = useToken()
     tokenStore.setToken(res.token)

@@ -9,7 +9,16 @@ export function login(data: LoginForm) {
     data: data,
   })
 }
-
+// 获取验证码
+export function getCodeImg() {
+  return request({
+    url: '/captchaImage',
+    method: 'get',
+    headers: {
+      isToken: false,
+    },
+  })
+}
 // 获取用户详细信息
 export function getUserInfo() {
   return request({

@@ -22,9 +22,10 @@ module.exports = defineConfig({
     },
   },
   devServer: {
+    port: 4000,
     proxy: {
-      '/api': {
-        target: 'http://vue.ruoyi.vip',
+      [process.env.VUE_APP_BASE_API]: {
+        target: 'https://nslc-mange.dev.lishicloud.com',
         changeOrigin: true,
       },
     },
